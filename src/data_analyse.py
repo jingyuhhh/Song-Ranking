@@ -3,10 +3,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.cm as cm
 import json
+from statsmodels.tsa.stattools import adfuller
 
 
 def data_analyse(data: pd.DataFrame):
-    # 1. Top 10 tracks in the global throughout year 2017 with their total stream counts.
+    # Top 10 tracks in the global throughout year 2017 with their total stream counts.
     top_tracks = data['Streams'].groupby(data['Track Name']).sum().sort_values(ascending=False)[:10]
     top_tracks = top_tracks.reset_index()
     fig, ax = plt.subplots()
@@ -19,9 +20,8 @@ def data_analyse(data: pd.DataFrame):
     ax.set_title('Top 10 tracks around the world', pad=20)
     ax.set_xlabel('Streams')
     plt.tight_layout()
-    # plt.show()
 
-    # 2. Top 10 artists in the global throughout year 2017 with their total stream counts.
+    # Top 10 artists in the global throughout year 2017 with their total stream counts.
     top_artists = data['Streams'].groupby(data['Artist']).sum().sort_values(ascending=False)[:10]
     top_artists = top_artists.reset_index()
     fig, ax = plt.subplots()
@@ -34,21 +34,10 @@ def data_analyse(data: pd.DataFrame):
     ax.set_title('Top 10 artists around the world', pad=20)
     ax.set_xlabel('Streams')
     plt.tight_layout()
-    # plt.show()
 
-    # 3. Top 10 tracks in each continent throughout year 2017 with their total stream counts.
-    with open('data/countries.json', 'r', encoding='utf-8') as f:
-        countries = json.load(f)
-    continents = [countries[country]['continent'] for country in countries]
-    continents = np.unique(continents)
-    print(continents)
-    # ['AF' 'AN' 'AS' 'EU' 'NA' 'OC' 'SA']
-    continent_countries = {}
-    for continent in continents:
-        continent_countries[continent] = [country.lower() for country in countries
-                                          if countries[country]['continent'] == continent]
+    # 由此可得知，全球最受欢迎的歌曲是Shape of You，最受欢迎的歌手是Ed Sheeran
 
-    # 4. Ranking changes of the Ed Sheeran's "Shape of You" alongside with the stream count changes
+    # Ranking changes of the Ed Sheeran's "Shape of You" alongside with the stream count changes
     shape_of_you = data[data['Track Name'] == 'Shape of You'].groupby('Date').sum()
     shape_of_you = shape_of_you.sort_values(by='Date')
     shape_of_you = shape_of_you.reset_index()
@@ -60,4 +49,32 @@ def data_analyse(data: pd.DataFrame):
     ax.set_xlabel('Date')
     ax.set_ylabel('Streams')
     plt.tight_layout()
-    plt.show()
+
+    # Rolling mean and standard deviation of the stream counts of the Ed Sheeran's "Shape of You"
+    shape_of_you_streams = shape_of_you['Streams']
+    roll_mean = pd.DataFrame.rolling(shape_of_you_streams, window=12).mean()
+    roll_std = pd.DataFrame.rolling(shape_of_you_streams, window=12).std()
+    plt.plot(shape_of_you_streams, color='blue', label='Original')
+    plt.plot(roll_mean, color='red', label='mean')
+    plt.plot(roll_std, color='black', label='std')
+    plt.legend(loc='best')
+    plt.title('Rolling Mean & Standard Deviation')
+    # plt.show()
+
+    # ADF平稳性检验
+    result = adfuller(shape_of_you_streams)
+    print('ADF Statistic: %f' % result[0])
+    print('p-value: %f' % result[1])
+    # ADF Statistic: -1.238973
+    # p-value: 0.656610
+    # p-value大于0.05
+    shape_of_you_streams = shape_of_you_streams.diff().dropna()
+    result = adfuller(shape_of_you_streams)
+    print('ADF Statistic: %f' % result[0])
+    print('p-value: %f' % result[1])
+    # ADF Statistic: -4.435676
+    # p - value: 0.000257
+    # p-value小于0.05，所以可以拒绝原假设，即该序列平稳
+
+
+
