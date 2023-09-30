@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.cm as cm
 import json
 from statsmodels.tsa.stattools import adfuller
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 
 
 def data_analyse(data: pd.DataFrame):
@@ -76,5 +77,12 @@ def data_analyse(data: pd.DataFrame):
     # p - value: 0.000257
     # p-value小于0.05，所以可以拒绝原假设，即该序列平稳
 
-
+    # 自相关图和偏相关图
+    fig = plt.figure(figsize=(12, 8))
+    ax1 = fig.add_subplot(211)
+    fig = plot_acf(shape_of_you_streams, lags=20, ax=ax1, alpha=0.05)
+    ax2 = fig.add_subplot(212)
+    fig = plot_pacf(shape_of_you_streams, lags=20, ax=ax2, alpha=0.05)
+    plt.show()
+    # 由自相关图和偏相关图可知，自相关图在滞后1阶后截尾，偏相关图在滞后1阶后截尾，所以可以使用ARMA(1,1)模型
 
