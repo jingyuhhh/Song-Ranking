@@ -6,7 +6,7 @@ import json
 
 
 def data_analyse(data: pd.DataFrame):
-    # 1. top 10 tracks in the global throughout year 2017 with their total stream counts.
+    # 1. Top 10 tracks in the global throughout year 2017 with their total stream counts.
     top_tracks = data['Streams'].groupby(data['Track Name']).sum().sort_values(ascending=False)[:10]
     top_tracks = top_tracks.reset_index()
     fig, ax = plt.subplots()
@@ -21,7 +21,7 @@ def data_analyse(data: pd.DataFrame):
     plt.tight_layout()
     # plt.show()
 
-    # 2. top 10 artists in the global throughout year 2017 with their total stream counts.
+    # 2. Top 10 artists in the global throughout year 2017 with their total stream counts.
     top_artists = data['Streams'].groupby(data['Artist']).sum().sort_values(ascending=False)[:10]
     top_artists = top_artists.reset_index()
     fig, ax = plt.subplots()
@@ -36,13 +36,28 @@ def data_analyse(data: pd.DataFrame):
     plt.tight_layout()
     # plt.show()
 
-    # 3. ranking changes of "Shape of You" in different continents.
+    # 3. Top 10 tracks in each continent throughout year 2017 with their total stream counts.
     with open('data/countries.json', 'r', encoding='utf-8') as f:
         countries = json.load(f)
     continents = [countries[country]['continent'] for country in countries]
     continents = np.unique(continents)
     print(continents)
     # ['AF' 'AN' 'AS' 'EU' 'NA' 'OC' 'SA']
+    continent_countries = {}
+    for continent in continents:
+        continent_countries[continent] = [country.lower() for country in countries
+                                          if countries[country]['continent'] == continent]
 
-
-
+    # 4. Ranking changes of the Ed Sheeran's "Shape of You" alongside with the stream count changes
+    shape_of_you = data[data['Track Name'] == 'Shape of You'].groupby('Date').sum()
+    shape_of_you = shape_of_you.sort_values(by='Date')
+    shape_of_you = shape_of_you.reset_index()
+    fig, ax = plt.subplots()
+    fig.set_size_inches(10, 6)
+    ax.plot(shape_of_you['Date'], shape_of_you['Streams'])
+    ax.xaxis.set_major_locator(plt.MaxNLocator(10))
+    ax.set_title('Stream count changes of the Ed Sheeran\'s "Shape of You"', pad=20)
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Streams')
+    plt.tight_layout()
+    plt.show()
