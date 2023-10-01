@@ -21,7 +21,7 @@ declare module '@vue/runtime-core' {
     NetflixDistBarTooltip: typeof import('./src/components/NetflixDistBarTooltip.vue')['default']
     NetflixGraph: typeof import('./src/components/NetflixGraph.vue')['default']
     NetflixTable: typeof import('./src/components/NetflixTable.vue')['default']
-    SvgDefs: typeof import('./src/components/SvgDefs.vue')['default']
+    SVGdefs: typeof import('./src/components/SVGdefs.vue')['default']
   }
 }
 
