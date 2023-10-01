@@ -12,6 +12,6 @@ if __name__ == '__main__':
     except FileNotFoundError:
         print('File not found')
         exit(1)
-    data_analyse(data)
+    # data_analyse(data)
     data_keyword(data)
 
