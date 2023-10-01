@@ -5,19 +5,21 @@ from wordcloud import WordCloud
 import jieba
 import pandas as pd
 import csv
-def data_keyword (data: pd.DataFrame):
+
+
+def data_keyword(data: pd.DataFrame):
 
     # 读取Track Name列名
-    key=data[['Track Name']]
+    key = data[data['Region'] == 'us']
+    key = key['Track Name']
 
     # 创建txt，删除索引和列名
-    key.to_csv('keywords.txt',index=False,header=False)
+    key.to_csv('keywords.txt', index=False, header=False)
 
     # 读取刚刚保存的txt
     with open("keywords.txt", "r", encoding='gbk', errors='ignore') as f:
         text = f.read()
     f.close()
-
     # 这些可有可无，主要是分割
     cut = jieba.cut(text)
     text = ' '.join(cut)
