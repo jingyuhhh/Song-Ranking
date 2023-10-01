@@ -3,6 +3,7 @@ import { watch, ref, onMounted } from 'vue';
 import { useConfig } from '../stores/vaConfig';
 import { useNetflixStore, type DistCount } from '../stores/netflix';
 import { useStaticNetflixStore } from '../stores/netflixStatic';
+import axios from "axios";
 
 // acquire color from pinia store
 const vaConfig = useConfig();
@@ -21,10 +22,23 @@ function onSelectButton(button: any) {
   button.get();
 }
 
-// The mounted option
-onMounted(() => {
-  // init and render bar chart
-  netflixStore.get_year_distribution(); // default with year distribution
+const continentList = [
+  { name: 'All'},
+  { name: 'North America'},
+  { name: 'South America'},
+  { name: 'Europe'},
+  { name: 'Asia'},
+  { name: 'Oceania'},
+]
+
+const selectedContinent = ref<string>('All');
+function onSelectContinent(continent: any) {
+  selectedContinent.value = continent.name;
+
+}
+
+onMounted(async () => {
+  await axios.post("http://localhost:5000/get_data");
 });
 
 
@@ -45,8 +59,23 @@ onMounted(() => {
         {{ `Top ${netflixStore.displayMax} ${button.name}` }}
       </a-button>
     </div>
+    <div class="button-group" v-if="selectedButton=='tracks'">
+      <a-button
+          class="button"
+          v-for="button in continentList"
+          :key="button.name"
+          :type="button.name === selectedContinent ? 'primary' : ''"
+          @click="onSelectContinent(button)"
+      >
+        {{ `${button.name}` }}
+      </a-button>
+    </div>
     <img src="../assets/top_10_artists.png" v-if="selectedButton=='artists'">
-    <img src="../assets/top_10_tracks.png" v-if="selectedButton=='tracks'">
+    <img src="../assets/top_10_tracks.png" v-if="selectedButton=='tracks' && selectedContinent=='All'">
+    <img src="../assets/top_10_tracks_in_america.png" v-if="selectedButton=='tracks' && selectedContinent=='North America'">
+    <img src="../assets/top_10_tracks_in_asia.png" v-if="selectedButton=='tracks' && selectedContinent=='Asia'">
+    <img src="../assets/top_10_tracks_in_europe.png" v-if="selectedButton=='tracks' && selectedContinent=='Europe'">
+    <img src="../assets/top_10_tracks_in_oceania.png" v-if="selectedButton=='tracks' && selectedContinent=='Oceania'">
 
   </div>
 </template>
@@ -72,7 +101,7 @@ onMounted(() => {
 }
 
 img{
-  height:90%;
+  height:85%;
   width:100%
 }
 

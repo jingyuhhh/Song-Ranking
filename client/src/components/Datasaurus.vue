@@ -4,10 +4,10 @@ import { useConfig } from '../stores/vaConfig';
 
 
 const buttonList = [
-  { name: 'tracks' },
+  { name: 'us' },
   { name: 'artists' },
 ];
-const selectedButton = ref<string>('tracks');
+const selectedButton = ref<string>('us');
 function onSelectButton(button: any) {
   selectedButton.value = button.name;
   button.get();
