@@ -7,6 +7,7 @@ from src.data_keyword import data_keyword
 if __name__ == '__main__':
     CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
     DATA_PATH = os.path.join(CURRENT_DIR, 'data/data.csv')
+    FEATURESDF = os.path.join(CURRENT_DIR,'data/featuresdf.csv')
     try:
         data = pd.read_csv(DATA_PATH)
     except FileNotFoundError:
