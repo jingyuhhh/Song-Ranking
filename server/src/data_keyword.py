@@ -6,6 +6,8 @@ import jieba
 import pandas as pd
 import csv
 
+ASSETS_PATH = '../client/src/assets'
+
 
 def data_keyword(data: pd.DataFrame):
 
@@ -14,10 +16,10 @@ def data_keyword(data: pd.DataFrame):
     key = key['Track Name']
 
     # 创建txt，删除索引和列名
-    key.to_csv('../assets/keywords.txt', index=False, header=False)
+    key.to_csv(ASSETS_PATH+'/keyword.txt', index=False, header=False)
 
     # 读取刚刚保存的txt
-    with open("../assets/keywords.txt", "r", encoding='gbk', errors='ignore') as f:
+    with open(ASSETS_PATH+'/keyword.txt', "r", encoding='gbk', errors='ignore') as f:
         text = f.read()
     f.close()
     # 这些可有可无，主要是分割
@@ -33,5 +35,5 @@ def data_keyword(data: pd.DataFrame):
     wc.generate(text)
     plt.axis("off")
     plt.imshow(wc, interpolation="bilinear")
-    wc.to_file('../assets/wordcloud.png')  # 将词云图保存为 'wordcloud.png'
+    wc.to_file(ASSETS_PATH+'/keyword.png')
 

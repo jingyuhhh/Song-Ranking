@@ -18,33 +18,22 @@ const playAnimation = ref<boolean>(true);
 
 <template>
   <a-row>
-    <a-col :span="6">
+    <a-col :span="9">
       <a-row class="row-half">
-        <D3BarButton
-          :play-animation="playAnimation"
-          @update:play-animation="playAnimation = $event"
-        />
-        <!-- The following implements the same bar chart in different API to serve as a migration guide -->
-        <D3BarComposistion
-          v-if="isComposition"
-          :playAnimation="playAnimation"
-        />
-        <D3BarOptions v-if="!isComposition" :playAnimation="playAnimation" />
       </a-row>
       <a-row class="row-half">
         <Datasaurus id="datasaurus_container" />
       </a-row>
     </a-col>
-    <a-col :span="18">
-      <a-row class="row-two-third">
-        <NetflixGraph />
-      </a-row>
+    <a-col :span="15">
       <a-row class="row-one-third">
-        <a-col :span="12">
-          <NetflixDistBar />
-        </a-col>
-        <a-col :span="12">
+        <a-col>
           <NetflixTable />
+        </a-col>
+      </a-row>
+      <a-row class="row-two-third">
+        <a-col style="height:600px">
+          <NetflixDistBar />
         </a-col>
       </a-row>
     </a-col>
@@ -61,10 +50,16 @@ const playAnimation = ref<boolean>(true);
   height: 900px;
   margin: 10px;
   border: 1px solid #455a64;
+  box-sizing: border-box;
+}
+
+a-row{
+  height:900px;
 }
 
 .row-one-third {
   height: 300px;
+  width: 100%;
 }
 
 .row-half {
@@ -73,6 +68,18 @@ const playAnimation = ref<boolean>(true);
 
 .row-two-third {
   height: 600px;
+  width: 100%;
+}
+img{
+  position:relative;
+  z-index:-1;
+
+}
+
+
+a-col{
+  height: inherit;
+  width: inherit;
 }
 
 .noselect {
