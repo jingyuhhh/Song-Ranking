@@ -36,6 +36,11 @@ def data_analyse(data: pd.DataFrame):
     ax.set_xlabel('Streams')
     plt.tight_layout()
 
+    # top 10 tracks in December 2017 for each continent (North America, Europe, Asia, South America, Oceania).
+    with open('data/countries.json', 'r') as f:
+        countries = json.load(f)
+
+
     # 由此可得知，全球最受欢迎的歌曲是Shape of You，最受欢迎的歌手是Ed Sheeran
 
     # Ranking changes of the Ed Sheeran's "Shape of You" alongside with the stream count changes
