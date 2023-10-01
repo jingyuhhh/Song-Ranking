@@ -15,7 +15,10 @@ def _get():
 
 @app.route('/get_keyword', methods=['POST'])
 def get_keyword():
-    return model.get_keyword()
+    data = request.json
+    region = data['country']
+    return model.get_keyword(region)
+
 
 @app.route('/get_data', methods=['POST'])
 def get_data():

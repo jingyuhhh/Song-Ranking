@@ -19,7 +19,7 @@ const buttonList = [
 const selectedButton = ref<string>('tracks');
 function onSelectButton(button: any) {
   selectedButton.value = button.name;
-  button.get();
+  imgURL.value = button.name === 'tracks' ? '/src/assets/top_10_tracks.png' : '/src/assets/top_10_artists.png';
 }
 
 const continentList = [
@@ -34,14 +34,21 @@ const continentList = [
 const selectedContinent = ref<string>('All');
 function onSelectContinent(continent: any) {
   selectedContinent.value = continent.name;
-
+  let continentName;
+  if (selectedContinent.value == 'North America') continentName = 'na'
+  else if (selectedContinent.value == 'South America') continentName = 'sa'
+  else if (selectedContinent.value == 'Europe') continentName = 'europe'
+  else if (selectedContinent.value == 'Asia') continentName = 'asia'
+  else if (selectedContinent.value == 'Oceania') continentName = 'oceania'
+  if (continentName == undefined) imgURL.value = `/src/assets/top_10_${selectedButton.value}.png`;
+  imgURL.value = `/src/assets/top_10_${selectedButton.value}_in_${continentName}.png`;
 }
 
 onMounted(async () => {
   await axios.post("http://localhost:5000/get_data");
 });
 
-
+const imgURL = ref<string>('/src/assets/top_10_tracks.png');
 
 
 </script>
@@ -59,7 +66,7 @@ onMounted(async () => {
         {{ `Top ${netflixStore.displayMax} ${button.name}` }}
       </a-button>
     </div>
-    <div class="button-group" v-if="selectedButton=='tracks'">
+    <div class="button-group">
       <a-button
           class="button"
           v-for="button in continentList"
@@ -70,12 +77,7 @@ onMounted(async () => {
         {{ `${button.name}` }}
       </a-button>
     </div>
-    <img src="../assets/top_10_artists.png" v-if="selectedButton=='artists'">
-    <img src="../assets/top_10_tracks.png" v-if="selectedButton=='tracks' && selectedContinent=='All'">
-    <img src="../assets/top_10_tracks_in_america.png" v-if="selectedButton=='tracks' && selectedContinent=='North America'">
-    <img src="../assets/top_10_tracks_in_asia.png" v-if="selectedButton=='tracks' && selectedContinent=='Asia'">
-    <img src="../assets/top_10_tracks_in_europe.png" v-if="selectedButton=='tracks' && selectedContinent=='Europe'">
-    <img src="../assets/top_10_tracks_in_oceania.png" v-if="selectedButton=='tracks' && selectedContinent=='Oceania'">
+    <img :src="imgURL">
 
   </div>
 </template>

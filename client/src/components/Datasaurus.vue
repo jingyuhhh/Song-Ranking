@@ -1,21 +1,38 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useConfig } from '../stores/vaConfig';
+import axios from "axios";
 
 
 const buttonList = [
   { name: 'us' },
-  { name: 'artists' },
+  { name: 'jp' },
+  { name: 'gb' },
+  { name: 'fr' },
+  { name: 'de' },
+  { name: 'ca' },
+  { name: 'au' },
 ];
 const selectedButton = ref<string>('us');
-function onSelectButton(button: any) {
+const imgURL = ref<string>("/src/assets/keyword_us.png");
+async function onSelectButton(button: any) {
   selectedButton.value = button.name;
-  button.get();
+  const res = await axios.post("http://localhost:5000/get_keyword", {country: button.name})
+  if (res.data.status == "success"){
+    console.log(res.data.data)
+  }
+  else{
+    console.log("error")
+  }
+  imgURL.value = "/src/assets/keyword_"+button.name+".png";
 }
+
+
 </script>
 
 <template>
   <div class="datasaurus">
+    <h4>Keyword</h4>
     <div class="button-group">
       <a-button
           class="button"
@@ -27,7 +44,7 @@ function onSelectButton(button: any) {
         {{ ` ${button.name}` }}
       </a-button>
     </div>
-    <img src="../assets/keyword.png">
+    <img :src="imgURL">
   </div>
 </template>
 
@@ -57,24 +74,4 @@ img{
   height:100%;
 }
 
-
-#datasaurus-svg {
-  flex: 1 0 auto;
-  /* border: 1px solid black; */
-}
-
-.datapoint-move,
-.datapoint-enter-active,
-.datapoint-leave-active {
-  transition: all 0.5s ease;
-}
-.datapoint-enter-from,
-.datapoint-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-
-.noselect {
-  user-select: none;
-}
 </style>

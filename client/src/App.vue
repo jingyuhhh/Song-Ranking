@@ -28,7 +28,6 @@ const playAnimation = ref<boolean>(true);
     <a-col :span="15">
       <a-row class="row-one-third">
         <a-col>
-          <NetflixTable />
         </a-col>
       </a-row>
       <a-row class="row-two-third">

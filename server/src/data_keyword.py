@@ -9,10 +9,9 @@ import csv
 ASSETS_PATH = '../client/src/assets'
 
 
-def data_keyword(data: pd.DataFrame):
-
+def data_keyword(data: pd.DataFrame, region: str):
     # 读取Track Name列名
-    key = data[data['Region'] == 'us']
+    key = data[data['Region'] == region]
     key = key['Track Name']
 
     # 创建txt，删除索引和列名
@@ -35,5 +34,5 @@ def data_keyword(data: pd.DataFrame):
     wc.generate(text)
     plt.axis("off")
     plt.imshow(wc, interpolation="bilinear")
-    wc.to_file(ASSETS_PATH+'/keyword.png')
+    wc.to_file(ASSETS_PATH+'/keyword_'+region+'.png')
 

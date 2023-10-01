@@ -40,7 +40,7 @@ def data_analyse(data: pd.DataFrame, countries: dict):
     plt.tight_layout()
     fig.savefig(ASSETS_PATH + '/top_10_artists.png')
 
-    # top 10 tracks in December 2017 for each continent
+    # top 10 tracks for each continent
     continents = {}
     for name, country in countries.items():
         continent = country['continent']
@@ -83,9 +83,46 @@ def data_analyse(data: pd.DataFrame, countries: dict):
 
     draw_barh(eu, 'Top 10 tracks in December 2017 for Europe', 'Reds')
     draw_barh(as_, 'Top 10 tracks in December 2017 for Asia', 'Greens')
-    draw_barh(na, 'Top 10 tracks in December 2017 for North America', 'Purples')
-    draw_barh(sa, 'Top 10 tracks in December 2017 for South America', 'Oranges')
+    draw_barh(na, 'Top 10 tracks in December 2017 for NA', 'Purples')
+    draw_barh(sa, 'Top 10 tracks in December 2017 for SA', 'Oranges')
     draw_barh(oc, 'Top 10 tracks in December 2017 for Oceania', 'Blues')
+
+    # top 10 artists for each continent
+    def get_top_artists_by_continent(region):
+        top_artists = (
+            data[data['Region'].isin(continents[region])]
+            ['Streams']
+            .groupby(data['Artist'])
+            .sum()
+            .sort_values(ascending=False)[:10]
+            .reset_index()
+        )
+        return top_artists
+
+    eu = get_top_artists_by_continent('EU')
+    as_ = get_top_artists_by_continent('AS')
+    na = get_top_artists_by_continent('NA')
+    sa = get_top_artists_by_continent('SA')
+    oc = get_top_artists_by_continent('OC')
+
+    def draw_barh(top_artists, title, color='Blues'):
+        fig, ax = plt.subplots()
+        fig.set_size_inches(10, 6)
+        colormap = cm.get_cmap(color)
+        norm = plt.Normalize(top_artists['Streams'].min(), top_artists['Streams'].max())
+        top_artists['Colors'] = top_artists['Streams'].apply(lambda x: colormap(norm(x)))
+        ax.barh(top_artists['Artist'], top_artists['Streams'], color=top_artists['Colors'])
+        ax.invert_yaxis()
+        ax.set_title(title, pad=20)
+        ax.set_xlabel('Streams')
+        plt.tight_layout()
+        fig.savefig(ASSETS_PATH + '/top_10_artists_in_{}.png'.format(title.split()[-1].lower()))
+
+    draw_barh(eu, 'Top 10 artists in December 2017 for Europe', 'Reds')
+    draw_barh(as_, 'Top 10 artists in December 2017 for Asia', 'Greens')
+    draw_barh(na, 'Top 10 artists in December 2017 for NA', 'Purples')
+    draw_barh(sa, 'Top 10 artists in December 2017 for SA', 'Oranges')
+    draw_barh(oc, 'Top 10 artists in December 2017 for Oceania', 'Blues')
 
     # 由此可得知，全球最受欢迎的歌曲是Shape of You，最受欢迎的歌手是Ed Sheeran
 

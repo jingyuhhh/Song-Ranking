@@ -27,8 +27,8 @@ class Model:
         except Exception as e:
             print(f'could not open: {PATH_DATA_FILE_DATASAURUS} because {e}')
 
-    def get_keyword(self):
-        data_keyword.data_keyword(self.data)
+    def get_keyword(self, region):
+        data_keyword.data_keyword(self.data, region)
         return 'ok'
 
     def get_data(self):
