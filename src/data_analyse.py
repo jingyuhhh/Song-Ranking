@@ -36,10 +36,54 @@ def data_analyse(data: pd.DataFrame):
     ax.set_xlabel('Streams')
     plt.tight_layout()
 
-    # top 10 tracks in December 2017 for each continent (North America, Europe, Asia, South America, Oceania).
-    # with open('data/countries.json', 'r') as f:
-    #     countries = json.load(f)
+    # top 10 tracks in December 2017 for each continent
+    with open('data/countries.json', 'r', encoding='utf-8') as f:
+        countries = json.load(f)
+    continents = {}
+    for name, country in countries.items():
+        continent = country['continent']
+        if continent not in continents:
+            continents[continent] = []
+        continents[continent].append(name.lower())
 
+    print(continents.keys())
+    # 'EU', 'AS', 'NA', 'AF', 'AN', 'SA', 'OC'
+
+    def get_top_songs_by_continent(region):
+        top_songs = (
+            data[data['Region'].isin(continents[region])]
+            ['Streams']
+            .groupby(data['Track Name'])
+            .sum()
+            .sort_values(ascending=False)[:10]
+            .reset_index()
+        )
+        return top_songs
+
+    eu = get_top_songs_by_continent('EU')
+    as_ = get_top_songs_by_continent('AS')
+    na = get_top_songs_by_continent('NA')
+    sa = get_top_songs_by_continent('SA')
+    oc = get_top_songs_by_continent('OC')
+
+    fig, ax = plt.subplots(5, 1)
+    fig.set_size_inches(10, 20)
+
+    def draw_barh(ax, top_songs, title, color='Blues'):
+        colormap = cm.get_cmap(color)
+        norm = plt.Normalize(top_songs['Streams'].min(), top_songs['Streams'].max())
+        top_songs['Colors'] = top_songs['Streams'].apply(lambda x: colormap(norm(x)))
+        ax.barh(top_songs['Track Name'], top_songs['Streams'], color=top_songs['Colors'])
+        ax.invert_yaxis()
+        ax.set_title(title, pad=20)
+        ax.set_xlabel('Streams')
+
+    draw_barh(ax[0], eu, 'Top 10 tracks in December 2017 for Europe', 'Reds')
+    draw_barh(ax[1], as_, 'Top 10 tracks in December 2017 for Asia', 'Greens')
+    draw_barh(ax[2], na, 'Top 10 tracks in December 2017 for North America', 'Purples')
+    draw_barh(ax[3], sa, 'Top 10 tracks in December 2017 for South America', 'Oranges')
+    draw_barh(ax[4], oc, 'Top 10 tracks in December 2017 for Oceania', 'Blues')
+    plt.tight_layout()
 
     # 由此可得知，全球最受欢迎的歌曲是Shape of You，最受欢迎的歌手是Ed Sheeran
 
@@ -65,7 +109,6 @@ def data_analyse(data: pd.DataFrame):
     plt.plot(roll_std, color='black', label='std')
     plt.legend(loc='best')
     plt.title('Rolling Mean & Standard Deviation')
-    # plt.show()
 
     # ADF平稳性检验
     result = adfuller(shape_of_you_streams)
