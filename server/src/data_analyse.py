@@ -21,7 +21,7 @@ def data_analyse(data: pd.DataFrame):
     ax.set_title('Top 10 tracks around the world', pad=20)
     ax.set_xlabel('Streams')
     plt.tight_layout()
-    fig.savefig('top_10_tracks.png')
+    fig.savefig('../../assets/top_10_tracks.png')
 
     # Top 10 artists in the global throughout year 2017 with their total stream counts.
     top_artists = data['Streams'].groupby(data['Artist']).sum().sort_values(ascending=False)[:10]
@@ -36,10 +36,10 @@ def data_analyse(data: pd.DataFrame):
     ax.set_title('Top 10 artists around the world', pad=20)
     ax.set_xlabel('Streams')
     plt.tight_layout()
-    fig.savefig('top_10_artists.png')
+    fig.savefig('../../assets/top_10_artists.png')
 
     # top 10 tracks in December 2017 for each continent
-    with open('data/countries.json', 'r', encoding='utf-8') as f:
+    with open('../data/countries.json', 'r', encoding='utf-8') as f:
         countries = json.load(f)
     continents = {}
     for name, country in countries.items():
@@ -86,7 +86,7 @@ def data_analyse(data: pd.DataFrame):
     draw_barh(ax[3], sa, 'Top 10 tracks in December 2017 for South America', 'Oranges')
     draw_barh(ax[4], oc, 'Top 10 tracks in December 2017 for Oceania', 'Blues')
     plt.tight_layout()
-    fig.savefig('top_10_tracks_by_continent.png')
+    fig.savefig('../../assets/top_10_tracks_by_continent.png')
 
     # 由此可得知，全球最受欢迎的歌曲是Shape of You，最受欢迎的歌手是Ed Sheeran
 
@@ -102,7 +102,7 @@ def data_analyse(data: pd.DataFrame):
     ax.set_xlabel('Date')
     ax.set_ylabel('Streams')
     plt.tight_layout()
-    fig.savefig('stream_count_changes.png')
+    fig.savefig('../../assets/stream_count_changes.png')
 
     # Rolling mean and standard deviation of the stream counts of the Ed Sheeran's "Shape of You"
     shape_of_you_streams = shape_of_you['Streams']
@@ -113,7 +113,7 @@ def data_analyse(data: pd.DataFrame):
     plt.plot(roll_std, color='black', label='std')
     plt.legend(loc='best')
     plt.title('Rolling Mean & Standard Deviation')
-    fig.savefig('rolling_mean_std.png')
+    fig.savefig('../../assets/rolling_mean_std.png')
 
     # ADF平稳性检验
     result = adfuller(shape_of_you_streams)
@@ -136,6 +136,6 @@ def data_analyse(data: pd.DataFrame):
     fig = plot_acf(shape_of_you_streams, lags=20, ax=ax1, alpha=0.05)
     ax2 = fig.add_subplot(212)
     fig = plot_pacf(shape_of_you_streams, lags=20, ax=ax2, alpha=0.05)
-    fig.savefig('acf_pacf.png')
+    fig.savefig('../../assets/acf_pacf.png')
     # 由自相关图和偏相关图可知，自相关图在滞后1阶后截尾，偏相关图在滞后1阶后截尾，所以可以使用ARMA(1,1)模型
 
