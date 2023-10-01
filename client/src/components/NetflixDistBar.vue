@@ -1,24 +1,16 @@
 <script setup lang="ts">
 import { watch, ref, onMounted } from 'vue';
-import { useConfig } from '../stores/vaConfig';
-import { useNetflixStore, type DistCount } from '../stores/netflix';
-import { useStaticNetflixStore } from '../stores/netflixStatic';
 import axios from "axios";
 
-// acquire color from pinia store
-const vaConfig = useConfig();
-const netflixStore = vaConfig.hasServer
-  ? useNetflixStore()
-  : useStaticNetflixStore(); // define data source according to the environment
 
-// button configurations
 const buttonList = [
-  { name: 'tracks', get: netflixStore.get_year_distribution },
-  { name: 'artists', get: netflixStore.get_country_distribution },
+  { name: 'tracks' },
+  { name: 'artists'},
 ];
 const selectedButton = ref<string>('tracks');
 function onSelectButton(button: any) {
   selectedButton.value = button.name;
+  selectedContinent.value = 'All';
   imgURL.value = button.name === 'tracks' ? '/src/assets/top_10_tracks.png' : '/src/assets/top_10_artists.png';
 }
 
@@ -63,7 +55,7 @@ const imgURL = ref<string>('/src/assets/top_10_tracks.png');
         :type="button.name === selectedButton ? 'primary' : ''"
         @click="onSelectButton(button)"
       >
-        {{ `Top ${netflixStore.displayMax} ${button.name}` }}
+        {{ `Top 10 ${button.name}` }}
       </a-button>
     </div>
     <div class="button-group">

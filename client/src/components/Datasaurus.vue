@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useConfig } from '../stores/vaConfig';
 import axios from "axios";
 
 
@@ -32,7 +31,7 @@ async function onSelectButton(button: any) {
 
 <template>
   <div class="datasaurus">
-    <h4>Keyword</h4>
+    <h4>Keyword in Different Countries</h4>
     <div class="button-group">
       <a-button
           class="button"

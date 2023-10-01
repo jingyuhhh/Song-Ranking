@@ -1,19 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useConfig } from './stores/vaConfig';
 import Datasaurus from './components/Datasaurus.vue';
-import D3BarButton from './components/D3BarButton.vue';
-import D3BarComposistion from './components/D3BarComposition.vue';
-import D3BarOptions from './components/D3BarOptions.vue';
-import NetflixTable from './components/NetflixTable.vue';
-import NetflixGraph from './components/NetflixGraph.vue';
 import NetflixDistBar from './components/NetflixDistBar.vue';
 
-const vaConfig = useConfig(); // define data source
-const { isComposition } = storeToRefs(vaConfig); // obtain reactive variables
-
-const playAnimation = ref<boolean>(true);
 </script>
 
 <template>

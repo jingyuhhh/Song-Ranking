@@ -30,7 +30,7 @@ def data_analyse(data: pd.DataFrame, countries: dict):
     top_artists = top_artists.reset_index()
     fig, ax = plt.subplots()
     fig.set_size_inches(10, 6)
-    colormap = cm.get_cmap('Purples')
+    colormap = cm.get_cmap('Blues')
     norm = plt.Normalize(top_artists['Streams'].min(), top_artists['Streams'].max())
     top_artists['Colors'] = top_artists['Streams'].apply(lambda x: colormap(norm(x)))
     ax.barh(top_artists['Artist'], top_artists['Streams'], color=top_artists['Colors'])
