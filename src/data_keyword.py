@@ -33,5 +33,5 @@ def data_keyword(data: pd.DataFrame):
     wc.generate(text)
     plt.axis("off")
     plt.imshow(wc, interpolation="bilinear")
-    plt.show()
-    # 打开方式是以一个窗口弹出，可以改成直接保存
+    wc.to_file('wordcloud.png')  # 将词云图保存为 'wordcloud.png'
+
