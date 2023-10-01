@@ -41,7 +41,7 @@ function onSelectContinent(continent: any) {
   else if (selectedContinent.value == 'Asia') continentName = 'asia'
   else if (selectedContinent.value == 'Oceania') continentName = 'oceania'
   if (continentName == undefined) imgURL.value = `/src/assets/top_10_${selectedButton.value}.png`;
-  imgURL.value = `/src/assets/top_10_${selectedButton.value}_in_${continentName}.png`;
+  else imgURL.value = `/src/assets/top_10_${selectedButton.value}_in_${continentName}.png`;
 }
 
 onMounted(async () => {
