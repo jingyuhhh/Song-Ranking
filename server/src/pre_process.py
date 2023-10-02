@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+ASSETS_PATH = '../client/src/assets/'
 
 def pre_process(df_train: pd.DataFrame, positive_word: pd.DataFrame, df_feature: pd.DataFrame):
     pd.options.mode.chained_assignment = None
@@ -323,7 +324,7 @@ def pre_process(df_train: pd.DataFrame, positive_word: pd.DataFrame, df_feature:
         i += 1
     plt.subplots_adjust(hspace=0.2, top=0.85)
     plt.suptitle('2017 Season Cnt')
-    plt.savefig('2017 Season Cnt.png')
+    plt.savefig(ASSETS_PATH+'2017 Season Cnt.png')
 
     month_user = df_train.loc[df_train.Date.dt.year == 2017, :].groupby('month')['Streams'].sum().to_frame()
     f, ax = plt.subplots(1, 2, figsize=(12, 3))
@@ -332,7 +333,7 @@ def pre_process(df_train: pd.DataFrame, positive_word: pd.DataFrame, df_feature:
     country_per_month = df_train.loc[df_train.Date.dt.year == 2017, :].groupby('month')['Region'].nunique().to_frame()
     ax[1].plot(np.arange(1, 13), country_per_month['Region'], '-ro')
     ax[1].set_title('Number of Country 2017 Month')
-    plt.savefig('Number of Streams and Country 2017 Month')
+    plt.savefig(ASSETS_PATH+'Number of Streams and Country 2017 Month')
 
     us_song = df_train.loc[df_train.Region == 'us', :]
     df_stream = us_song[['Date', 'Track Name', 'Streams', 'Position']]
@@ -358,7 +359,7 @@ def pre_process(df_train: pd.DataFrame, positive_word: pd.DataFrame, df_feature:
         ax[1].invert_yaxis()
         ax[1].set_title('Top1 Number : ' + str((tmp2.values == 1).sum()))
         ax[0].set_title(type_ + ': ' + song)
-        plt.savefig(type_+'.png')
+        plt.savefig(ASSETS_PATH+type_+'.png')
 
     type_of_graph = {0: 'Up_Down', 2: 'Down', 3: 'Alone Down', 4: 'Sudden SoarUp', 5: 'Remix', 6: 'Down Mean', 8: 'Curve'}
     for key, type_ in type_of_graph.items():

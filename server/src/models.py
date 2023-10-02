@@ -50,7 +50,6 @@ class Model:
         return 'ok'
 
     def pre_process(self):
-        print(self.positive_word)
         pre_process.pre_process(self.data, self.positive_word, self.df_feature)
         return 'ok'
 
