@@ -24,3 +24,7 @@ def get_keyword():
 def get_data():
     return model.get_data()
 
+
+# @app.route('/predict', methods=['POST'])
+# def predict():
+#     return model.predict()
