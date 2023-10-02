@@ -24,7 +24,7 @@ def get_keyword():
 def get_data():
     return model.get_data()
 
-@app.route('/pre_process', methods=['POST'])
-def preprocess():
-    return model.pre_process()
 
+# @app.route('/predict', methods=['POST'])
+# def predict():
+#     return model.predict()
