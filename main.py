@@ -1,7 +1,9 @@
 from src.data_analyse import data_analyse
+from src.pre_process import pre_process
 import pandas as pd
 import os
 import numpy as np
+
 
 if __name__ == '__main__':
     CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -11,5 +13,6 @@ if __name__ == '__main__':
     except FileNotFoundError:
         print('File not found')
         exit(1)
+    pre_process(data)
     data_analyse(data)
 
