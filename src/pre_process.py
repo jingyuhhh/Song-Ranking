@@ -13,12 +13,12 @@ import seaborn as sns
 # from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 
-def pre_process(df_train: pd.DataFrame):
+def pre_process(df_train: pd.DataFrame, positive_word: pd.DataFrame, df_feature: pd.DataFrame):
     pd.options.mode.chained_assignment = None
 
     # df_train = pd.read_csv('data/data.csv')
-    positive_word = pd.read_excel('data/positive_words.xlsx')
-    df_feature = pd.read_csv("data/featuresdf.csv")
+    # positive_word = pd.read_excel('data/positive_words.xlsx')
+    # df_feature = pd.read_csv("data/featuresdf.csv")
     positive_word.columns = ['char', 'word_set']
     positive_word['word_set'] = positive_word['word_set'].apply(
         lambda r: set([word.strip().lower for word in r.split(',')]))
@@ -322,7 +322,7 @@ def pre_process(df_train: pd.DataFrame):
     ref.iloc[1, :] / tot
 
     df_train.dropna(inplace=True)
-    plt.figure(figsize=(12, 3))
+    plt.figure(figsize=(15, 4))
     i = 1
     df_tmp = df_train.loc[df_train.Date.dt.year == 2017, :]
     for col in ['month', 'day', 'dayofweek']:
