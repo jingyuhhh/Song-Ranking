@@ -3,22 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# 下面的库没有使用，就不引用了
-# from pandas.tools.plotting import autocorrelation_plot
-
-# from statsmodels.tsa.stattools import adfuller
-# from statsmodels.tsa.stattools import acf, pacf
-# from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
-# from statsmodels.tsa.arima_model import ARIMA
-# from statsmodels.tsa.statespace.sarimax import SARIMAX
-
 
 def pre_process(df_train: pd.DataFrame, positive_word: pd.DataFrame, df_feature: pd.DataFrame):
     pd.options.mode.chained_assignment = None
-
-    # df_train = pd.read_csv('data/data.csv')
-    # positive_word = pd.read_excel('data/positive_words.xlsx')
-    # df_feature = pd.read_csv("data/featuresdf.csv")
     positive_word.columns = ['char', 'word_set']
     positive_word['word_set'] = positive_word['word_set'].apply(
         lambda r: set([word.strip().lower for word in r.split(',')]))
@@ -336,7 +323,7 @@ def pre_process(df_train: pd.DataFrame, positive_word: pd.DataFrame, df_feature:
         i += 1
     plt.subplots_adjust(hspace=0.2, top=0.85)
     plt.suptitle('2017 Season Cnt')
-    plt.show()
+    plt.savefig('2017 Season Cnt.png')
 
     month_user = df_train.loc[df_train.Date.dt.year == 2017, :].groupby('month')['Streams'].sum().to_frame()
     f, ax = plt.subplots(1, 2, figsize=(12, 3))
@@ -345,7 +332,7 @@ def pre_process(df_train: pd.DataFrame, positive_word: pd.DataFrame, df_feature:
     country_per_month = df_train.loc[df_train.Date.dt.year == 2017, :].groupby('month')['Region'].nunique().to_frame()
     ax[1].plot(np.arange(1, 13), country_per_month['Region'], '-ro')
     ax[1].set_title('Number of Country 2017 Month')
-    plt.show()
+    plt.savefig('Number of Streams and Country 2017 Month')
 
     us_song = df_train.loc[df_train.Region == 'us', :]
     df_stream = us_song[['Date', 'Track Name', 'Streams', 'Position']]
@@ -371,7 +358,7 @@ def pre_process(df_train: pd.DataFrame, positive_word: pd.DataFrame, df_feature:
         ax[1].invert_yaxis()
         ax[1].set_title('Top1 Number : ' + str((tmp2.values == 1).sum()))
         ax[0].set_title(type_ + ': ' + song)
-        plt.show()
+        plt.savefig(type_+'.png')
 
     type_of_graph = {0: 'Up_Down', 2: 'Down', 3: 'Alone Down', 4: 'Sudden SoarUp', 5: 'Remix', 6: 'Down Mean', 8: 'Curve'}
     for key, type_ in type_of_graph.items():
