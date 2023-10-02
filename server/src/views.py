@@ -24,3 +24,7 @@ def get_keyword():
 def get_data():
     return model.get_data()
 
+@app.route('/preprocess', methods=['POST'])
+def preprocess():
+    return model.pre_process()
+

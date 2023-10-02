@@ -3,6 +3,7 @@ import json
 import pandas as pd
 from . import data_keyword
 from . import data_analyse
+from . import pre_process
 
 PATH_DATA_FOLDER = '../data/'
 PATH_DATA_FILE_NETFLIX = 'data.csv'
@@ -32,6 +33,10 @@ class Model:
         return 'ok'
 
     def get_data(self):
-        data_analyse.data_analyse(self.data, self.countries)
+        data_analyse.data_analyse(self.data)
+        return 'ok'
+
+    def pre_process(self):
+        pre_process.pre_process(self.data)
         return 'ok'
 
