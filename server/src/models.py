@@ -3,12 +3,11 @@ import json
 import pandas as pd
 from . import data_keyword
 from . import data_analyse
-# from . import data_forecast
+from . import data_forecast
 from . import pre_process
 
 PATH_DATA_FOLDER = '../data/'
 PATH_DATA_FILE = 'data.csv'
-PATH_DATA_FILE_FORECAST = 'feature_2017.csv'
 PATH_DATA_FILE_DATASAURUS = 'countries.json'
 PATH_DATA_POSITIVE_WORDS = 'positive_words.xlsx'
 PATH_DATA_FEATURES = 'featuresdf.csv'
@@ -31,11 +30,6 @@ class Model:
         except Exception as e:
             print(f'could not open: {PATH_DATA_FILE_DATASAURUS} because {e}')
 
-        try:
-            self.data_forecast = pd.read_csv(os.path.join(
-                self.DATA_FOLDER, PATH_DATA_FILE_FORECAST))
-        except:
-            print(f'could not open: {PATH_DATA_FILE_FORECAST}')
         try:
             self.positive_word = pd.read_excel(os.path.join(
                 self.DATA_FOLDER, PATH_DATA_POSITIVE_WORDS))
@@ -60,8 +54,8 @@ class Model:
         pre_process.pre_process(self.data, self.positive_word, self.df_feature)
         return 'ok'
 
-    # def predict(self):
-        # data_forecast.data_forecast(self.data, self.data_forecast)
-        # return 'ok'
+    def predict(self):
+        data_forecast.data_forecast(self.data, self.df_feature)
+        return 'ok'
 
 

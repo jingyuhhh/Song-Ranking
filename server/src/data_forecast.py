@@ -1,20 +1,11 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
-import torch
-from pandas.plotting import autocorrelation_plot
 import os
-
-
-from statsmodels.tsa.stattools import adfuller
-from statsmodels.tsa.stattools import acf, pacf
-from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
-from statsmodels.tsa.arima_model import ARIMA
 from statsmodels.tsa.statespace.sarimax import SARIMAX
-
-from sklearn.metrics import mean_squared_error as mse
 pd.options.mode.chained_assignment = None
+
+ASSETS_PATH = '../client/src/assets/'
 
 
 # 1.在main函数里面读取数据
@@ -61,12 +52,9 @@ def data_forecast(data:pd.DataFrame,song_feature:pd.DataFrame):
         ax.legend()  # 添加图例，显示 Streams 和 Forecast 的标签
 
         # 保存图像为 PNG 文件
-        save_dir = 'forecast_photos'
-        if not os.path.exists(save_dir):
-            os.makedirs(save_dir)
 
         ax.set_title(name)
-        plt.savefig(os.path.join(save_dir, savename))
+        plt.savefig(os.path.join(ASSETS_PATH, savename))
 
         plt.close(fig)  # 关闭图形窗口，防止图像显示在界面上
 
@@ -86,12 +74,8 @@ def data_forecast(data:pd.DataFrame,song_feature:pd.DataFrame):
         X_test['Streams'].plot(ax=ax, color='green', label='Streams')
         X_test['forecast'].plot(ax=ax, color='m', label='Forecast')
 
-        save_dir = 'forecast_photos'
-        if not os.path.exists(save_dir):
-            os.makedirs(save_dir)
-
         ax.set_title(name)
-        plt.savefig(os.path.join(save_dir, savename))
+        plt.savefig(os.path.join(ASSETS_PATH, savename))
 
         plt.close(f)
 
@@ -172,8 +156,3 @@ def data_forecast(data:pd.DataFrame,song_feature:pd.DataFrame):
                    name=' With Exog, Prediction AR = 1,I = 1,SMA = 1,Periods = 7,Trend = a * x At Test',
                    exog=np.array([exog for i in range(75)]))
         # 显然本次的效果下,两个测试集都得到了很好的满足
-
-if __name__ == '__main__':
-    data = pd.read_csv('../data/data.csv')  # 这里改成github中的路径
-    song_feature = pd.read_csv('../data/featuresdf.csv')  # 这里就是读取两个测试集，然后就行了
-    data_forecast(data, song_feature)
