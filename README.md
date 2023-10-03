@@ -28,3 +28,5 @@
 2. 各个州Top 10 artists展示
 3. 不同国家tracks关键词展示
 4. 预测"Shape of you"的streams
+
+![image](https://github.com/volcano621/Song-Ranking/assets/113242468/385da668-fa60-43dd-aec1-459b2fa4a5d5)
