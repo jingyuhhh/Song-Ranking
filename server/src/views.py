@@ -28,7 +28,7 @@ def get_data():
 # @app.route('/predict', methods=['POST'])
 # def predict():
 #     return model.predict()
-
 @app.route('/pre_process', methods=['POST'])
-def pre_process():
+def preprocess():
     return model.pre_process()
+
