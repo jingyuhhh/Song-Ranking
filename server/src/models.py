@@ -3,12 +3,11 @@ import json
 import pandas as pd
 from . import data_keyword
 from . import data_analyse
+from . import data_forecast
 from . import pre_process
-# from . import data_forecast
 
 PATH_DATA_FOLDER = '../data/'
 PATH_DATA_FILE = 'data.csv'
-PATH_DATA_FILE_FORECAST = 'feature_2017.csv'
 PATH_DATA_FILE_DATASAURUS = 'countries.json'
 PATH_DATA_POSITIVE_WORDS = 'positive_words.xlsx'
 PATH_DATA_FEATURES = 'featuresdf.csv'
@@ -55,8 +54,8 @@ class Model:
         pre_process.pre_process(self.data, self.positive_word, self.df_feature)
         return 'ok'
 
-    # def predict(self):
-        # data_forecast.data_forecast(self.data, self.data_forecast)
-        # return 'ok'
+    def predict(self):
+        data_forecast.data_forecast(self.data, self.df_feature)
+        return 'ok'
 
 

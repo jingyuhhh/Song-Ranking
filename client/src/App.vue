@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import Datasaurus from './components/Datasaurus.vue';
 import NetflixDistBar from './components/NetflixDistBar.vue';
+import PreProcess from "@/components/PreProcess.vue";
+import Predict from "@/components/Predict.vue";
 
 </script>
 
@@ -8,6 +10,7 @@ import NetflixDistBar from './components/NetflixDistBar.vue';
   <a-row>
     <a-col :span="9">
       <a-row class="row-half">
+        <PreProcess />
       </a-row>
       <a-row class="row-half">
         <Datasaurus id="datasaurus_container" />
@@ -16,6 +19,7 @@ import NetflixDistBar from './components/NetflixDistBar.vue';
     <a-col :span="15">
       <a-row class="row-one-third">
         <a-col>
+          <Predict />
         </a-col>
       </a-row>
       <a-row class="row-two-third">
