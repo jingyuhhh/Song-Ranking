@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     ARow: typeof import('ant-design-vue/es')['Row']
     Datasaurus: typeof import('./src/components/Datasaurus.vue')['default']
     NetflixDistBar: typeof import('./src/components/NetflixDistBar.vue')['default']
+    Predict: typeof import('./src/components/Predict.vue')['default']
     PreProcess: typeof import('./src/components/PreProcess.vue')['default']
     SVGdefs: typeof import('./src/components/SVGdefs.vue')['default']
   }
