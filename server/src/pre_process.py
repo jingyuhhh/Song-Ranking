@@ -5,6 +5,7 @@ import seaborn as sns
 
 ASSETS_PATH = '../client/src/assets/'
 
+
 def pre_process(df_train: pd.DataFrame, positive_word: pd.DataFrame, df_feature: pd.DataFrame):
     pd.options.mode.chained_assignment = None
     positive_word.columns = ['char', 'word_set']
@@ -310,21 +311,18 @@ def pre_process(df_train: pd.DataFrame, positive_word: pd.DataFrame, df_feature:
     ref.iloc[1, :] / tot
 
     df_train.dropna(inplace=True)
-    plt.figure(figsize=(15, 4))
-    i = 1
     df_tmp = df_train.loc[df_train.Date.dt.year == 2017, :]
     for col in ['month', 'day', 'dayofweek']:
-        ax = plt.subplot(1, 3, i)
+        plt.figure(figsize=(5, 4))
+        ax = plt.subplot(1, 1, 1)
         cnt = df_tmp[col].value_counts()
         cnt.sort_index(inplace=True)
         sns.barplot(x=cnt.index, y=cnt.values, ax=ax)
         ax.set_title(col)
-        ax.set_yticklabels('')
         ax.tick_params('x', rotation=90)
-        i += 1
-    plt.subplots_adjust(hspace=0.2, top=0.85)
-    plt.suptitle('2017 Season Cnt')
-    plt.savefig(ASSETS_PATH+'2017 Season Cnt.png')
+        plt.subplots_adjust(hspace=0.2, top=0.85)
+        plt.suptitle('2017 Season Cnt')
+        plt.savefig(ASSETS_PATH+'2017 ' + col + ' Cnt.png')
 
     month_user = df_train.loc[df_train.Date.dt.year == 2017, :].groupby('month')['Streams'].sum().to_frame()
     f, ax = plt.subplots(1, 2, figsize=(12, 3))
